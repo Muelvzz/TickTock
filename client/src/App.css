@@ -1,6 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Agu+Display&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import "tailwindcss";
 
-*, html {
+@theme {
+  --font-agu: "Agu Display", serif;
+  --font-nunito: "Nunito", sans-serif;
+  --color-green: #14ae5c;
+  --color-white: #ffffff;
+}
+
+html {
   padding: 0;
   margin: 0;
 }
@@ -8,4 +16,27 @@
 html {
   width: 100%;
   height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6, p, small { 
+  color: #222222;
+  font-style: "Inter" sans-serif;
+}
+
+h1 { font-size: 2.027rem; }
+h2 { font-size: 1.802rem; }
+h3 { font-size: 1.602rem; }
+h4 { font-size: 1.424rem; }
+h5 { font-size: 1.266rem; }
+h6 { font-size: 1.125rem; }
+p { font-size: 1rem; }
+small { font-size: 0.889rem; }
+
+button {
+  cursor: pointer;
+  transition-duration: 300;
+}
+
+button:hover {
+  opacity: 75%;
 }
