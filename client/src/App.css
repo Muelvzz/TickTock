@@ -7,6 +7,11 @@
   --color-green: #14ae5c;
   --color-white: #ffffff;
   --color-washed-white: #F6F6F6;
+  --color-grey: #605858
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 html {
@@ -17,11 +22,6 @@ html {
 html, body {
   width: 100%;
   height: 100%;
-}
-
-h1, h2, h3, h4, h5, h6, p, small, a { 
-  color: #222222;
-  font-style: "Inter" sans-serif;
 }
 
 h1 { font-size: 2.027rem; }

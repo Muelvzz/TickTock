@@ -4,6 +4,8 @@ import mediumImg from "../../assets/socials/medium.png"
 import linkedinImg from "../../assets/socials/linkedin.png"
 import githubImg from "../../assets/socials/github.png"
 
+import { Link } from "react-router-dom"
+
 export default function Footer() {
   return (
     <>
@@ -13,28 +15,42 @@ export default function Footer() {
             <div>
               <p><b>Product</b></p>
               <ul className="flex flex-col gap-y-3 mt-3">
-                <li>Get Started</li>
-                <li>View Repo</li>
+                <li>
+                  <Link to="/sign-up">Get Started</Link>
+                </li>
+                <li>
+                  <Link to="https://github.com/Muelvzz/TickTock">View Repo</Link>
+                </li>
               </ul>
             </div>
             <div>
               <p><b>Support</b></p>
               <ul className="flex flex-col gap-y-3 mt-3">
-                <li>Help Center</li>
-                <li>FAQ</li>
-                <li>Contact Us</li>
+                <li>
+                  <Link to="/help">Help Center</Link>
+                </li>
+                <li>
+                  <Link to="/faq">FAQ</Link>
+                </li>
+                <li>
+                  <Link to="/contact-us">Contact Us</Link>
+                </li>
               </ul>
             </div>
             <div>
               <p><b>About</b></p>
               <ul className="flex flex-col gap-y-3 mt-3">
-                <li>About Me</li>
+                <li>
+                  <Link to="/about-me">About Me</Link>
+                </li>
               </ul>
             </div>
           </section>
           <section className="hidden md:flex-1 md:flex flex-col items-end gap-y-3">
             <span>
-              <button className="bg-green text-white px-8 py-2 font-bold rounded-md">Get Started</button>
+              <button className="bg-green text-white px-8 py-2 font-bold rounded-md">
+                <Link to="/sign-up">Get Started</Link>
+              </button>
             </span>
             <div>
               <ul className="flex gap-x-3">

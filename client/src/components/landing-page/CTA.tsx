@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function CTA() {
   return (
     <>
@@ -5,8 +7,12 @@ export default function CTA() {
         <div className="text-center w-full md:w-4/5 lg:w-2/5">
           <h1 className="font-bold font-nunito">Start Your Productive Journey With Us.</h1>
           <span className="flex gap-x-5 justify-center mt-5">
-            <button className="font-bold bg-green text-white px-5 py-2 rounded-full">Get Started</button>
-            <button className="font-bold bg-white border-green border-solid border-2 text-green px-5 py-2 rounded-full">View Repo</button>
+            <button className="font-bold bg-green text-white px-5 py-2 rounded-full">
+              <Link to="/sign-up">Get Started</Link>
+            </button>
+            <button className="font-bold bg-white border-green border-solid border-2 text-green px-5 py-2 rounded-full">
+              <Link to="https://github.com/Muelvzz/TickTock">View Repo</Link>
+            </button>
           </span>
         </div>
       </article>

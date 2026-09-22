@@ -1,5 +1,6 @@
 import { useState } from "react"
 import "../../css/hamburger.css"
+import { Link } from 'react-router-dom';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,10 +19,16 @@ export default function Navigation() {
             <span className="w-full flex justify-end items-center">
               <div className="hidden md:flex">
                 <ul className="flex items-center gap-x-5 font-bold">
-                  <li>Features</li>
-                  <li>Resources</li>
                   <li>
-                    <button className="bg-green text-white px-4 py-1 rounded-sm">Get Started</button>
+                    <Link to="/features">Features</Link>
+                  </li>
+                  <li>
+                    <Link to="/resource">Resources</Link>
+                  </li>
+                  <li>
+                    <button className="bg-green text-white px-4 py-1 rounded-sm">
+                      <Link to="/sign-up">Get Started</Link>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -41,9 +48,9 @@ export default function Navigation() {
           </article>
           {isOpen && (
             <div className="absolute top-8 left-0 w-full bg-white flex flex-col p-4 space-y-4 z-999 md:hidden">
-              <a href="">Features</a>
-              <a href="">Resources</a>
-              <a href="">Get Started</a>
+              <Link to="/features">Features</Link>
+              <Link to="/resource">Resources</Link>
+              <Link to="/sign-up">Get Started</Link>
             </div>
           )}
         </nav>
