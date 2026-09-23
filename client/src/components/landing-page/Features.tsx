@@ -1,7 +1,7 @@
-import featureToDoImg from "../../assets/feature-todo.png"
-import featurePlanImg from "../../assets/feature-planner.png"
-import featureFocusImg from "../../assets/feature-focus.png"
-import featureInsightImg from "../../assets/feature-insights.png"
+import featureToDoImg from "../../assets/feature-icons/feature-todo.png"
+import featurePlanImg from "../../assets/feature-icons/feature-planner.png"
+import featureFocusImg from "../../assets/feature-icons/feature-focus.png"
+import featureInsightImg from "../../assets/feature-icons/feature-insights.png"
 
 const FeatureList = [
   {
