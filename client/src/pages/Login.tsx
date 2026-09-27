@@ -1,8 +1,26 @@
 import AuthNavigation from "../components/auth-nav/AuthNav"
+import { useState } from "react"
+import { useAuth } from "../hooks/useAuth"
+import { loginUserData } from "../services/userService"
 import { Link } from "react-router-dom"
 
 export default function Login() {
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+
+  const data = useAuth()
+
   const inputStyles = "px-3 py-2 lg:px-4 lg:py-3 rounded-lg border border-solid border-grey"
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (!email || !password) { alert("Invalid username or password") }
+    e.preventDefault()
+    const payload = await loginUserData(email, password)
+    if (payload?.user?.username) {
+      await data?.login(payload.user.username)
+    }
+  }
+
   return (
     <>
       <AuthNavigation 
@@ -15,14 +33,14 @@ export default function Login() {
           <section className="w-9/10 md:w-7/10 lg:w-5/10 bg-washed-white p-5 md:p-10 lg:p-15 rounded-md">
             <div className="flex flex-col gap-y-30">
               <div className="flex flex-col gap-y-3">
-                <form action="" className="flex flex-col gap-y-10">
+                <form onSubmit={ handleLogin } className="flex flex-col gap-y-10">
                   <div>
                     <h2 className="font-bold">Sign In</h2>
                   </div>
                   <div className="flex flex-col gap-y-5">
-                    <input type="email" placeholder="email" className={ inputStyles }/>
-                    <input type="password" placeholder="password" className={ inputStyles }/>
-                    <button className="bg-green rounded-md px-3 py-2 lg:px-4 lg:py-3 text-white font-bold">Sign In</button>
+                    <input type="email" placeholder="email" className={ inputStyles } value={ email } onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="password" placeholder="password" className={ inputStyles } value={ password } onChange={(e) => setPassword(e.target.value)}/>
+                    <button className="bg-green rounded-md px-3 py-2 lg:px-4 lg:py-3 text-white font-bold" type="submit">Sign In</button>
                   </div>
                 </form>
                 <div className="text-center">

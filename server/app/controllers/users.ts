@@ -4,6 +4,29 @@ import { hashPassword, validateAndNormalizeEmail, verifyPassword } from "../util
 import { redisClient } from "../config/redisClient.ts";
 import { randomUUID } from "crypto";
 
+export const getSession = async (req: Request, res: Response) => {
+  const sessionCookie = req.headers.cookie
+    ?.split(";")
+    .map((cookie) => cookie.trim())
+    .find((cookie) => cookie.startsWith("sessionId="));
+  const sessionId = sessionCookie?.slice("sessionId=".length);
+
+  if (!sessionId) {
+    return res.status(401).json({ message: "No active session" });
+  }
+
+  try {
+    const sessionData = await redisClient.get(`session:${ sessionId }`);
+    if (!sessionData) {
+      return res.status(401).json({ message: "Session expired" });
+    }
+
+    return res.status(200).json({ user: JSON.parse(sessionData) });
+  } catch {
+    return res.status(500).json({ message: "Unable to verify session" });
+  }
+};
+
 export const signUp = async (req: Request, res: Response) => {
 
   const { email, password, username } = req.body
@@ -87,7 +110,7 @@ export const signIn = async (req: Request, res: Response) => {
     const SESSION_TTL = 1800
     await redisClient.setEx(`session:${ newSessionId }`, SESSION_TTL, JSON.stringify(sessionData))
 
-    res.cookie("newSessionId", newSessionId, {
+    res.cookie("sessionId", newSessionId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: SESSION_TTL * 1000
