@@ -7,7 +7,8 @@
   --color-green: #14ae5c;
   --color-white: #ffffff;
   --color-washed-white: #F6F6F6;
-  --color-grey: #605858
+  --color-grey: #605858;
+  --color-light-grey: #D3D3D3
 }
 
 *, *::before, *::after {

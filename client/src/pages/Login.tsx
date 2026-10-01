@@ -28,7 +28,7 @@ export default function Login() {
         btnText="Sign Up"
         redirect="/sign-up"
       />
-      <main className="h-full">
+      <main className="h-screen">
         <article className="flex justify-center items-center h-full py-10">
           <section className="w-9/10 md:w-7/10 lg:w-5/10 bg-washed-white p-5 md:p-10 lg:p-15 rounded-md">
             <div className="flex flex-col gap-y-30">
