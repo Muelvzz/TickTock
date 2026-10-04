@@ -4,29 +4,6 @@ import { hashPassword, validateAndNormalizeEmail, verifyPassword } from "../util
 import { redisClient } from "../config/redisClient.ts";
 import { randomUUID } from "crypto";
 
-export const getSession = async (req: Request, res: Response) => {
-  const sessionCookie = req.headers.cookie
-    ?.split(";")
-    .map((cookie) => cookie.trim())
-    .find((cookie) => cookie.startsWith("sessionId="));
-  const sessionId = sessionCookie?.slice("sessionId=".length);
-
-  if (!sessionId) {
-    return res.status(401).json({ message: "No active session" });
-  }
-
-  try {
-    const sessionData = await redisClient.get(`session:${ sessionId }`);
-    if (!sessionData) {
-      return res.status(401).json({ message: "Session expired" });
-    }
-
-    return res.status(200).json({ user: JSON.parse(sessionData) });
-  } catch {
-    return res.status(500).json({ message: "Unable to verify session" });
-  }
-};
-
 export const signUp = async (req: Request, res: Response) => {
 
   const { email, password, username } = req.body
@@ -100,6 +77,8 @@ export const signIn = async (req: Request, res: Response) => {
       req.session.destroy((err) => {
         if (err) { return res.status(500).json({ error: 'Failed to destroy session' }) }
       })
+      res.clearCookie("connect.sid", { path: "/" })
+      res.clearCookie("sessionId", { path: "/" })
     }
 
     const createdUser = data[0]
@@ -122,4 +101,20 @@ export const signIn = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Internal server error." });
   }
 
+}
+
+export const logout = (req: Request, res: Response) => {
+  if (!req.cookies.sessionId) {
+    return res.status(404).json({ error: "Logged Out Unsuccessful: No Existing Sessions Found." })
+  } else {
+    req.session.destroy((err) => {
+      if (err) { 
+        return res.status(500).json({ error: 'Failed to destroy session' }) 
+      }
+      res.clearCookie("connect.sid", { path: "/" })
+      res.clearCookie("sessionId", { path: "/" })
+  
+      return res.status(401).json({ message: "Successfully logged out" })
+    })
+  }
 }

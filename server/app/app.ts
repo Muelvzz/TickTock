@@ -1,8 +1,11 @@
 import express from "express";
 import { userRouter } from "./routes/userRoutes.ts";
+import { categoryRouter } from "./routes/categoryRoutes.ts";
+import { protectRoute } from "./middleware/auth.ts";
 import session from "express-session"
 import dotenv from "dotenv"
 import cors from "cors"
+import cookieParser from "cookie-parser"
 
 const allowList = ["http://localhost:5173"]
 
@@ -35,8 +38,11 @@ app.use(session({
 }))
 
 app.use(express.json())
+app.use(cookieParser())
 
 app.use("", userRouter)
+app.use("", protectRoute, categoryRouter)
+
 app.listen(3000, () => {
   console.log("[SERVER] Server is running at http://localhost:3000")
 })
