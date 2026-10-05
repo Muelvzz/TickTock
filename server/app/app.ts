@@ -6,25 +6,8 @@ import session from "express-session"
 import dotenv from "dotenv"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-
-const allowList = ["http://localhost:5173"]
-
-const corsOptions = {
-  origin: function (
-    origin: string | undefined, 
-    callback: (err: Error | null, allow?: boolean
-  ) => void) {
-
-    if (!origin || allowList.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allows by CORS"))
-    }
-  },
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
-}
+import { corsOptions } from "./config/corsSettings.ts";
+import { taskRouter } from "./routes/taskRoutes.ts";
 
 dotenv.config()
 const app = express()
@@ -42,6 +25,7 @@ app.use(cookieParser())
 
 app.use("", userRouter)
 app.use("", protectRoute, categoryRouter)
+app.use("", protectRoute, taskRouter)
 
 app.listen(3000, () => {
   console.log("[SERVER] Server is running at http://localhost:3000")

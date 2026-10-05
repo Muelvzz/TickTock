@@ -4,7 +4,18 @@ import { hashPassword, validateAndNormalizeEmail, verifyPassword } from "../util
 import { redisClient } from "../config/redisClient.ts";
 import { randomUUID } from "crypto";
 
-export const signUp = async (req: Request, res: Response) => {
+type SignUpType = {
+  username: string,
+  email: string,
+  password: string
+}
+
+type SignInType = {
+  email: string,
+  password: string
+}
+
+export const signUp = async (req: Request<SignUpType>, res: Response) => {
 
   const { email, password, username } = req.body
 
@@ -46,7 +57,7 @@ export const signUp = async (req: Request, res: Response) => {
   
 }
 
-export const signIn = async (req: Request, res: Response) => {
+export const signIn = async (req: Request<SignInType>, res: Response) => {
 
   const { email, password } = req.body
 
@@ -103,10 +114,14 @@ export const signIn = async (req: Request, res: Response) => {
 
 }
 
-export const logout = (req: Request, res: Response) => {
+export const logout = (req: Request<string>, res: Response) => {
+
+  // 1. Check if the Server stores your cookie
   if (!req.cookies.sessionId) {
     return res.status(404).json({ error: "Logged Out Unsuccessful: No Existing Sessions Found." })
   } else {
+
+    // 2. Clear both "connect.sid" and "sessionId"
     req.session.destroy((err) => {
       if (err) { 
         return res.status(500).json({ error: 'Failed to destroy session' }) 

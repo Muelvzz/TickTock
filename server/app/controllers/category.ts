@@ -20,7 +20,7 @@ type DeleteCategoryPayload = {
   categoryId: number
 }
 
-export const createCategory = async (req: Request, res: Response) => {
+export const createCategory = async (req: Request<CreateCategoryPayload>, res: Response) => {
   
   const { userId, categoryName, categoryLogo } = req.body
 
@@ -36,8 +36,7 @@ export const createCategory = async (req: Request, res: Response) => {
   
     if (error) {
       console.log(`[SERVER] Error: ${ error.message }`)
-      return res.status(400).json({ message: "There's a problem of adding the user. Please check the Console Tab for more information." })
-      return
+      return res.status(400).json({ message: "There's a problem of adding a category. Please check the Console Tab for more information." })
     }
 
     const createdCategory = data[0]

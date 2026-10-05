@@ -4,7 +4,7 @@ let pool: InstanceType<typeof Pool> | undefined
 
 export function getDatabase() {
   if (!pool) {
-    const connectionString =
+    const connectionString: string | undefined =
       process.env.SUPABASE_DB_TEST ?? process.env.DATABASE_URL
 
     if (!connectionString) {
