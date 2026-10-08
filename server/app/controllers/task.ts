@@ -1,5 +1,7 @@
 import type { Request, Response } from "express"
 import { supabase } from "../config/supabaseClient.ts"
+import type { UpdateTaskQuery } from "../types/task.ts"
+import { queryComposition } from "../utils/queryComp.ts"
 
 type CreateTaskPayload = {
   user_id: number,
@@ -10,6 +12,10 @@ type CreateTaskPayload = {
 
 type ReadTaskPayload = {
   id: string
+}
+
+type DeleteTaskPayload = {
+  taskid: string
 }
 
 export const createTask = async (req: Request<CreateTaskPayload>, res: Response) => {
@@ -63,4 +69,59 @@ export const readTask = async (req: Request<ReadTaskPayload>, res: Response) => 
     return res.status(500).json({ message: "Internal server error." });
 
   }
+}
+
+export const updateTask = async (req: Request, res: Response) => {
+
+  const query: UpdateTaskQuery = queryComposition(req.body)
+  const { taskid } = req.params
+
+  try {
+
+    const { data, error } = await supabase.from("task").update(query).eq("task_id", taskid)
+
+    if (error) {
+      console.log(`[SERVER] Error: ${ error.message }`)
+      res.status(400).json({ message: "There's a problem of fetching all the Categories. Please check the Console Tab for more information." })
+      return
+    }
+
+    return res.status(201).json({ message: "Successfully updated a task" })
+
+  } catch (error) {
+
+    if (error instanceof Error) { return res.status(401).json({ message: error.message })}
+    return res.status(500).json({ message: "Internal server error." });
+
+  }
+
+}
+
+export const deleteTask = async (req: Request<DeleteTaskPayload>, res: Response) => {
+
+  const { taskid } = req.params
+
+  try {
+
+    const { data, error } = await supabase.from("task").delete().eq("task_id", taskid)
+
+    if (error) {
+      console.log(`[SERVER] Error: ${ error.message }`)
+      res.status(400).json({ message: "There's a problem of deleting the Task. Please check the Console Tab for more information." })
+      return
+    }
+
+    if (!data) {
+      return res.status(404).json({ message: "No task found" })
+    }
+
+    return res.status(200).json({ message: "Task Deleted Successfully", data: data })
+
+  } catch (error) {
+
+    if (error instanceof Error) { return res.status(401).json({ message: error.message })}
+    return res.status(500).json({ message: "Internal server error." });
+
+  }
+
 }
