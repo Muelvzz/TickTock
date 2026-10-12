@@ -15,6 +15,12 @@ type SignInType = {
   password: string
 }
 
+// TODO: Create a refresh token
+// TODO: Create a delete endpont that deletes the User's credentials and it's existing data.
+// TODO: Create an update endpoint
+// FIXME: Move the type literals used into their respective file.
+
+// [REFACTOR] include types for "res" and the functions output
 export const signUp = async (req: Request<SignUpType>, res: Response) => {
 
   const { email, password, username } = req.body
@@ -57,20 +63,18 @@ export const signUp = async (req: Request<SignUpType>, res: Response) => {
   
 }
 
+// [REFACTOR] include types for "res" and the functions output
 export const signIn = async (req: Request<SignInType>, res: Response) => {
 
   const { email, password } = req.body
 
-  // 1. Does the request have email and password?
   if (!email || !password) { 
     return res.status(400).json({ message: "Error: Email and password values must not be empty" }) 
   }
 
   try {
-    // 2.1. is the email valid?
     const validEmail = validateAndNormalizeEmail(email)
 
-    // 3. Does the email exist in the Database?
     const { data, error } = (await supabase.from("user").select("*").eq("email", validEmail))
 
     if (error) {
@@ -79,10 +83,8 @@ export const signIn = async (req: Request<SignInType>, res: Response) => {
       return
     }
 
-    // 2.2. is the password valid?
     const validPassword = await verifyPassword(password, data[0].password)
-
-    // 4. Does the request contain a session ID cookie?
+    
     const sessionId = req.sessionID
     if (sessionId) {
       req.session.destroy((err) => {
